@@ -1,6 +1,6 @@
 import streamlit as st
 from database import create_tables, run_query
-from utils import local_css, image_with_caption, info_card
+from utils import image_with_caption, info_card
 
 # Ensure database tables exist
 create_tables()
@@ -12,21 +12,30 @@ st.set_page_config(
     layout="wide"
 )
 
-local_css("styles.css")
+# CSS'in doğru dosya yoluyla çağrılması
+st.markdown(
+    """<style>
+        @import url('/styles.css'); /* veya dosya yolunu doğrudan verebilirsiniz */
+    </style>""", 
+    unsafe_allow_html=True
+)
 
+# Title
 st.title("İklim Değişikliği Bilgi Portalı")
 
+# Description
 st.markdown("""
     İklim değişikliği, dünyamızın karşı karşıya olduğu en büyük çevresel sorunlardan biridir. 
     Bu portal, iklim değişikliği hakkında temel bilgileri, güncel verileri ve çözüm önerilerini 
     sunmayı amaçlamaktadır.
 """)
 
+# Create columns for the main content
 col1, col2 = st.columns(2)
 
 with col1:
     image_with_caption(
-        "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51",
+        "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51-",
         "Kuraklığın etkileri - Çölleşme"
     )
     info_card(
@@ -48,7 +57,10 @@ with col2:
         "kritik öneme sahiptir."
     )
 
+# New interactive features section
 st.markdown("### Yeni İnteraktif Özellikler")
+
+# Create columns for interactive links
 col3, col4, col5 = st.columns(3)
 
 with col3:
@@ -58,7 +70,9 @@ with col3:
     - Topluluk projelerine katılın
     - Fikirlere oy verin
     """)
-    st.page_link("pages/04_proje_fikirleri.py", label="Proje Fikirlerine Git", icon="🌱")
+    # Use button for navigating to pages
+    if st.button("Proje Fikirlerine Git"):
+        st.experimental_rerun()  # Or use a custom redirect method
 
 with col4:
     st.markdown("""
@@ -67,7 +81,9 @@ with col4:
     - Çözüm önerileri alın
     - İlerlemenizi takip edin
     """)
-    st.page_link("pages/05_karbon_ayak_izi.py", label="Karbon Hesaplayıcı", icon="👣")
+    # Same for other links
+    if st.button("Karbon Hesaplayıcı"):
+        st.experimental_rerun()
 
 with col5:
     st.markdown("""
@@ -76,9 +92,12 @@ with col5:
     - Veri görselleştirmeleri
     - İklim verileri aracı
     """)
-    st.page_link("pages/06_iklim_haberleri.py", label="İklim Haberlerine Git", icon="📰")
+    if st.button("İklim Haberlerine Git"):
+        st.experimental_rerun()
 
+# Highlighted Topics Section
 st.markdown("### Öne Çıkan Konular")
+
 col6, col7, col8 = st.columns(3)
 
 with col6:
@@ -104,4 +123,3 @@ with col8:
     - Orman yangınları
     - Türlerin yok olması
     """)
-
